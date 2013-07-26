@@ -1,29 +1,39 @@
-var digger = require('../src');
-var data = require('./fixtures/data');
+var Container = require('../src');
+
+var citydata = require('./fixtures/cities.json');
+var simpledata = require('./fixtures/simple.json');
 
 describe('container', function(){
 
   it('should create an empty container', function() {
-    var container = digger.create();
+    var container = Container();
 
-    container.length.should.equal(0);
+    container.count().should.equal(0);
   })
 
   it('should be a function', function() {
-    var container = digger.create();
+    var container = Container();
 
     container.should.be.a('function');
   })
 
   it('should create an empty container with no models', function() {
-    var container = digger.create();
+    var container = Container();
 
     container.models.length.should.equal(0);
   })
 
+  it('should emit events', function(done) {
+    var test = Container();
+
+    test.on('hello', done);
+    test.emit('hello');
+  })
+
+
   it('should build from basic data', function() {
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       address:{
         postcode:'apples'
@@ -39,7 +49,7 @@ describe('container', function(){
 
   it('should not obliterate the tag if _digger data is given also', function() {
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       _digger:{
         id:'test'
@@ -52,7 +62,7 @@ describe('container', function(){
 
   it('should run the is() function and return the right result', function() {
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       _digger:{
         id:'test'
@@ -64,7 +74,7 @@ describe('container', function(){
   })
 
   it('should ensure a digger id', function() {
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       address:{
         postcode:'apples'
@@ -76,38 +86,24 @@ describe('container', function(){
     test.diggerid().length.should.equal(32);
   })
 
-  it('should ensure a digger path', function() {
-    var test = digger.create('product', {
-      price:100,
-      address:{
-        postcode:'apples'
-      }
-    })
-
-    test.diggerpath().should.be.a('array');
-  })
-
   it('should have the correct underlying model structure', function() {
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       address:{
         postcode:'apples'
       }
     })
 
-    test.models.should.be.a('array');
     test.models[0].should.be.a('object');
     test.models[0].price.should.equal(100);
     test.models[0]._digger.should.be.a('object');
-    test.models[0]._digger.class.should.be.a('array');
-    test.models[0]._children.should.be.a('array');
 
   })
 
   it('should clone another container and have changed the ids', function() {
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       address:{
         postcode:'apples'
@@ -122,24 +118,9 @@ describe('container', function(){
 
   })
 
-
-  it('XML should have the correct underlying model structure', function() {
-
-    var test = digger.create('<product price="100" class="red" />');
-
-    test.models.should.be.a('array');
-    test.models[0].should.be.a('object');
-    test.models[0].price.should.equal("100");
-    test.models[0]._digger.should.be.a('object');
-    test.models[0]._digger.class.should.be.a('array');
-    test.models[0]._children.should.be.a('array');
-    test.hasClass('red').should.equal(true);
-
-  })
-
   it('should allow the manipulation of the underlying data', function(){
 
-    var test = digger.create('product', {
+    var test = Container('product', {
       price:100,
       address:{
         postcode:'apples'
@@ -176,34 +157,22 @@ describe('container', function(){
   })  
 
   it('should allow access to diggerurl', function(){
-    var test = digger.container('test');
+    var test = Container('test');
     test.diggerid('123');
     test.diggerwarehouse('/testapi');
 
     test.diggerurl().should.equal('/testapi/123');
   })
 
-  it('should build from XML', function(){
-    var test = digger.create(data.simplexml);
+  it('should export to JSON', function(){
+    var test = Container(simpledata);
 
-    test.count().should.equal(1);
-    test.tag().should.equal('folder');
-  })
-
-  it('should export to JSON and XML', function(){
-    var test = digger.create(data.simplexml);
-
-    test.toJSON().should.be.a('array');
     test.toJSON().length.should.equal(1);
     test.toJSON()[0]._digger.should.be.a('object');
-
-    var xml = test.toXML();
-    xml.should.be.a('string');
-    xml.charAt(0).should.equal('<');
   })
 
   it('should be able to access single containers via eq', function(){
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.count().should.equal(1);
     test.eq(0).should.be.a('function');
@@ -213,7 +182,7 @@ describe('container', function(){
   })
 
   it('should be able to access single models via get', function(){
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.count().should.equal(1);
     test.get(0).should.be.a('object');
@@ -224,7 +193,7 @@ describe('container', function(){
 
   it('should change the attributes of all models', function(){
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.children().attr('test', 23);
 
@@ -236,17 +205,17 @@ describe('container', function(){
 
   it('should allow arrays to be set as the value', function(){
 
-    var test = digger.create('test');
+    var test = Container('test');
 
     test.attr('arr', [1,2,3]);
 
-    test.attr('arr').should.be.a('array');
+    test.attr('arr')[1].should.equal(2);
 
   })
 
   it('should allow objects to be set as the value', function(){
 
-    var test = digger.create('test');
+    var test = Container('test');
 
     test.attr('obj', {
       fruit:'apple'
@@ -259,7 +228,7 @@ describe('container', function(){
 
   it('should allow booleans to be set as the value', function(){
 
-    var test = digger.create('test');
+    var test = Container('test');
 
     test.attr('bool', false);
 
@@ -270,7 +239,7 @@ describe('container', function(){
 
   it('should get the attribute for the first model', function(){
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     var uk = test.children();
     var name = uk.attr('name');
@@ -280,7 +249,7 @@ describe('container', function(){
   })
 
   it('should pass the supplychain down to children and descendents', function(){
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.supplychain = 34;
 
@@ -292,7 +261,7 @@ describe('container', function(){
 
   it('should be able access children', function(){
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.children().count().should.equal(2);
     test.children().eq(1).hasClass('big').should.equal(true);
@@ -300,7 +269,7 @@ describe('container', function(){
 
   it('should be able iterate models', function(){
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
     var childcounter = 0;
     test.children().each(function(container){
       childcounter++;
@@ -311,7 +280,7 @@ describe('container', function(){
 
   it('should be able to map containers', function(){
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     var values = test.children().map(function(container){
       return container.attr('name');
@@ -322,19 +291,30 @@ describe('container', function(){
     values[1].should.equal('Scotland');
   })
 
+  it('should provide a summary', function() {
+
+    var test = Container('product', {
+      name:'test'
+    }).addClass('thing').id('45')
+
+    test.summary().should.equal('test: product#45.thing');
+    
+  })
+
+/*
   it('should append and find children', function() {
-    var parent = digger.create('product', {
+    var parent = Container('product', {
       price:100,
       address:{
         postcode:'apples'
       }
     })
 
-    var child1 = digger.create('caption', {
+    var child1 = Container('caption', {
       test:'hello1'
     }).addClass('apples')
 
-    var child2 = digger.create('caption', {
+    var child2 = Container('caption', {
       test:'hello2'
     }).addClass('oranges')
 
@@ -348,7 +328,7 @@ describe('container', function(){
 
   it('should run selectors on local data', function() {
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     test.find('city.south').count().should.equal(3);
     test.find('country[name^=U] > city.south area.poor').count().should.equal(3);
@@ -356,24 +336,18 @@ describe('container', function(){
   })
   
   it('should apply limit and first and last modifiers', function() {
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
     test.find('city.south').count().should.equal(3);    
     test.find('city.south:first').count().should.equal(1);
     test.find('city.south:last').count().should.equal(1);
     test.find('city.south:limit(2)').count().should.equal(2);
   })
 
-  it('should emit events', function(done) {
-    var test = digger.create();
-
-    test.on('hello', done);
-    test.emit('hello');
-  })
 
 
   it('should extract a meta skeleton', function() {
 
-    var test = digger.create(data.citiesxml);
+    var test = Container(citydata);
 
     var cities = test.find('city.south');
 
@@ -383,14 +357,7 @@ describe('container', function(){
     skeleton[0].tag.should.equal('city');
     
   })
+*/
 
-  it('should provide a summary', function() {
 
-    var test = digger.create('product', {
-      name:'test'
-    }).addClass('thing').id('45')
-
-    test.summary().should.equal('test: product#45.thing');
-    
-  })
 })

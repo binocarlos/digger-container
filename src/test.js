@@ -6,3 +6,7 @@ var Container = require('./index');
 
   console.log('-------------------------------------------');
   console.dir(c.toJSON());
+
+  console.log('-------------------------------------------');
+  console.log('-------------------------------------------');
+  console.dir(c.tag());
