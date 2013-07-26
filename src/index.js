@@ -18,4 +18,8 @@
 
 var Proto = require('./proto');
 
-module.exports = Proto.factory;
+module.exports = function(tag, data){
+	return Proto.factory(tag, data);
+}
+
+module.exports.proto = Proto;
