@@ -52,10 +52,14 @@ function factory(){
   }
 
   var instance = function container(){
-    if(!instance.supplychain){
-      throw new Error('there is no supply chain attached to this container');
+    if(!instance.select){
+      throw new Error('there is no select method attached to this container');
     }
-    return instance.supplychain.select.apply(instance, _.toArray(arguments));
+    var args = [arguments[0]];
+    if(arguments.length>1){
+      args.push(arguments[1]);
+    }
+    return instance.select.apply(instance, args);
   }
 
   instance.__proto__ = new Container;
