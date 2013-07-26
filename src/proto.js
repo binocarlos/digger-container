@@ -51,6 +51,10 @@ function factory(){
     models = [arguments[0]];
   }
 
+  if(models[0]===undefined || models[0]===null){
+    models = [];
+  }
+
   var instance = function container(){
     if(!instance.select){
       throw new Error('there is no select method attached to this container');
@@ -113,7 +117,9 @@ Container.prototype.toJSON = function(){
 Container.prototype.spawn = function(models){
   models = models || [];
 	var container = Container.factory(models);
-	container.supplychain = this.supplychain;
+  if(this.supplychain){
+    container.supplychain = this.supplychain;  
+  }
 	return container;
 }
 
@@ -189,10 +195,16 @@ Container.prototype.skeleton = function(){
 
 Container.prototype.add = function(container){
   var self = this;
-  if(typeof(container) === 'array'){
-    container.each(function(c){
+  
+  if(!container){
+    return this;
+  }
+  
+  if(Object.prototype.toString.call(container) == '[object Array]'){
+    container.forEach(function(c){
       self.add(c);
     })
+    
   }
   else{
     this.models = this.models.concat(container.models);
@@ -264,9 +276,15 @@ function wrapper(basepath){
 	return function(path, val){
 		var self = this;
 		if(arguments.length<=0){
+      if(self.isEmpty()){
+        return null;
+      }
 			return valuereader(self.get(0), basepath);
 		}
 		else if(arguments.length===1 && typeof(path)==='string'){
+      if(self.isEmpty()){
+        return null;
+      }
 			return valuereader(self.get(0), makepath(path, basepath));
 		}
 		else if(arguments.length===1){
@@ -290,14 +308,20 @@ function property_wrapper(basepath, property){
 
 		var self = this;
 		if(arguments.length<=0){
+      if(self.isEmpty()){
+        return null;
+      }
 			var model = dotty.get(self.get(0), basepath);
 			return model[property];
 		}
 		else{
-			self.models.forEach(function(model){
-        var basemodel = dotty.get(model, basepath);
-				basemodel[property] = val;
-			})
+      if(!self.isEmpty()){
+        self.models.forEach(function(model){
+          var basemodel = dotty.get(model, basepath);
+          basemodel[property] = val;
+        })  
+      }
+			
 			return self;
 		}
 	}
