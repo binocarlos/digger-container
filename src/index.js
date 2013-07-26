@@ -23,3 +23,16 @@ module.exports = function(tag, data){
 }
 
 module.exports.proto = Proto;
+
+/*
+
+	add extra functions to the container prototype
+
+	this means we can create different browser builds capable of different things
+	
+*/
+module.exports.augment_prototype = function(api){
+	for(var prop in api){
+		Proto.prototype[prop] = api[prop];
+	}
+}
