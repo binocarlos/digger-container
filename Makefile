@@ -12,6 +12,14 @@ test:
 		--growl \
 		$(TESTS)
 
+browserify:
+	browserify src/index.js > build/container.js
+
+uglify: browserify
+	uglifyjs build/container.js > build/container.min.js
+
+build: uglify
+
 install:
 	npm install
 
