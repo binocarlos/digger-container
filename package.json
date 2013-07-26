@@ -26,7 +26,7 @@
     "should": "~1.2.2"
   },
   "dependencies": {
-    "dotty": "0.0.2",
+    "dotty": "~0.0.2",
     "digger-utils": "~1.0.0"
   }
 }
