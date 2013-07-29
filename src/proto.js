@@ -38,11 +38,23 @@ function factory(){
   var models = [];
 
   if(typeof(arguments[0])==='string'){
-    var model = arguments[1] || {};
-    var digger = model._digger || {};
-    digger.tag = arguments[0];
-    model._digger = digger;
-    models = [model];
+    var string = arguments[0];
+    var c = string.charAt(0);
+    if(c==='{' || c==='['){
+      var data = JSON.parse(string);
+      if(c==='{'){
+        data = [data];
+      }
+      models = data;
+    }
+    else{
+      var model = arguments[1] || {};
+      var digger = model._digger || {};
+      digger.tag = string;
+      model._digger = digger;
+      models = [model];  
+    }
+    
   }
   else if(Object.prototype.toString.call(arguments[0]) == '[object Array]'){  
     models = arguments[0];
