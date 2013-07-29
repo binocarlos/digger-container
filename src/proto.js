@@ -511,7 +511,7 @@ Container.prototype.diggerurl = function(){
   var warehouse = this.diggerwarehouse();
   var id = this.diggerid();
 
-  var url = warehouse;
+  var url = warehouse || '/';
 
   if(id && this.tag()!='_supplychain'){
     if(warehouse!='/'){
@@ -521,7 +521,7 @@ Container.prototype.diggerurl = function(){
     url += id;
   }
   
-  return url;
+  return url.replace(/\/\//g, '/');
 }
 
 /*
