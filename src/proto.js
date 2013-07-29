@@ -165,6 +165,32 @@ Container.prototype.ensure_parent_ids = function(parent){
   })
 }
 
+Container.prototype.inject_paths = function(basepath){
+
+  this.diggerpath(basepath);
+
+  this.children().each(function(child, index){
+    child.inject_paths(basepath.concat([index]));
+  })
+
+}
+
+Container.prototype.ensure_meta = function(done){
+  if(!this.diggerid()){
+    this.diggerid(utils.diggerid());
+  }
+
+  var topcounter = 0;
+  if(this.diggerpath().length<=0){
+    this.inject_paths([topcounter]);
+    topcounter++;
+  }
+
+  this.ensure_parent_ids();
+  return this;
+}
+
+
 Container.prototype.children = function(){
   var models = [];
   var self = this;
@@ -358,6 +384,16 @@ Container.prototype.data = wrapper('_digger.data');
 Container.prototype.diggerid = property_wrapper('_digger', 'diggerid');
 Container.prototype.diggerparentid = property_wrapper('_digger', 'diggerparentid');
 Container.prototype.diggerwarehouse = property_wrapper('_digger', 'diggerwarehouse');
+var pathwrapper = property_wrapper('_digger', 'diggerpath');
+Container.prototype.diggerpath = function(){
+  var ret = pathwrapper.apply(this, _.toArray(arguments));
+
+  if(!_.isArray(ret)){
+    ret = [];
+  }
+
+  return ret;
+}
 
 Container.prototype.id = property_wrapper('_digger', 'id');
 Container.prototype.tag = property_wrapper('_digger', 'tag');
