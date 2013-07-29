@@ -386,9 +386,9 @@ Container.prototype.diggerparentid = property_wrapper('_digger', 'diggerparentid
 Container.prototype.diggerwarehouse = property_wrapper('_digger', 'diggerwarehouse');
 var pathwrapper = property_wrapper('_digger', 'diggerpath');
 Container.prototype.diggerpath = function(){
-  var ret = pathwrapper.apply(this, _.toArray(arguments));
+  var ret = pathwrapper.apply(this, utils.toArray(arguments));
 
-  if(!_.isArray(ret)){
+  if(!utils.isArray(ret)){
     ret = [];
   }
 
