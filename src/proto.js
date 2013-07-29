@@ -395,6 +395,46 @@ Container.prototype.diggerpath = function(){
   return ret;
 }
 
+
+var branchwrapper = property_wrapper('_digger', 'diggerbranch');
+Container.prototype.diggerbranch = function(){
+  var ret = branchwrapper.apply(this, utils.toArray(arguments));
+
+  if(!utils.isArray(ret)){
+    ret = [];
+  }
+
+  return ret;
+}
+
+Container.prototype.addBranch = function(where){
+  var self = this;
+  var branches = this.diggerbranch();
+  where.each(function(container){
+    branches.push(container.diggerurl());
+  })
+  this.diggerbranch(branches);
+  return this;
+}
+
+Container.prototype.removeBranch = function(where){
+  var self = this;
+  var branches = this.diggerbranch();
+
+  where.each(function(container){
+
+    var newbranches = [];
+    for(var i=0; i<branches.length; i++){
+      if(branches[i]!=container.diggerurl()){
+        newbranches.push(branches[i]);
+      }
+    }
+    branches = newbranches;
+  })
+  this.diggerbranch(branches);
+  return this;
+}
+
 Container.prototype.id = property_wrapper('_digger', 'id');
 Container.prototype.tag = property_wrapper('_digger', 'tag');
 Container.prototype.classnames = property_wrapper('_digger', 'class');
