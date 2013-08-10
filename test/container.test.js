@@ -301,6 +301,21 @@ describe('container', function(){
     
   })
 
+
+  it('should ensure a digger property on all descendents', function() {
+
+    var test = Container([{
+      name:'test',
+      _children:[{
+        name:'child'
+      }]
+    }])
+
+    var child = test.children().get(0);
+    child._digger.diggerid.should.equal(test.children().eq(0).diggerid());
+    
+    
+  })
 /*
   it('should append and find children', function() {
     var parent = Container('product', {

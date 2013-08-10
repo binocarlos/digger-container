@@ -23,13 +23,13 @@ var utils = require('digger-utils');
 
 function Container(){}
 
-
 /*
 
 	Factory for new containers
 	
 */
 function factory(){
+
 	/*
   
     first let's extract the model data
@@ -78,6 +78,15 @@ function factory(){
     return instance.select.apply(instance, args);
   }
 
+  /*
+  
+    ensure each model has a _digger property and an id
+    
+  */
+  function process_model(model){
+
+  }
+
   instance.__proto__ = new Container;
   instance.build(models);
   
@@ -104,15 +113,21 @@ module.exports = Container;
 Container.prototype.build = function(models){
 
 	this.models = models || [];
-	for(var i in models){
-    var model = models[i];
+
+  function process_model(model){
     if(!model._digger){
       model._digger = {};
     }
-		if(!model._digger.diggerid){
-			model._digger.diggerid = utils.diggerid();
-		}
-	}
+    if(!model._digger.diggerid){
+      model._digger.diggerid = utils.diggerid();
+    }
+    if(model._children){
+      model._children.forEach(process_model);
+    }
+  }
+
+  this.models.forEach(process_model);
+
   return this;
 }
 
