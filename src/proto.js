@@ -583,6 +583,8 @@ Container.prototype.summary = function(options){
     })
   }
 
+  parts.unshift(this.diggerid().substr(0,6));
+
   return parts.join('');
 }
 
