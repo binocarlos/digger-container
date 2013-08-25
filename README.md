@@ -1,6 +1,6 @@
 # digger-container
 
-A JQuery style array wrapper for JSON models
+A JQuery style wrapper for JSON model arrays.
 
 # install
 
@@ -10,24 +10,70 @@ A JQuery style array wrapper for JSON models
 
 ## browser
 
-You can use [browserify](https://github.com/substack/node-browserify) and use digger-container in the browser too!
+digger-container is a [component](https://github.com/component/component) and so you can:
 
-# overview
+	$ component install binocarlos/digger-container
 
-This library provides an api very similar to JQuery but for messing with JSON models not DOM elements.
+You can also use [browserify](https://github.com/substack/node-browserify).
 
-It can be used a stand-alone data tool or as part of a greater [digger.io](https://github.com/binocarlos/digger.io) network.
+## overview
+This library provides an api very similar to JQuery but for an array of JSON models rather than DOM elements.
 
-## data structure
-All containers have a 'models' property.
+It can be used a stand-alone data tool or as part of a greater [digger](https://github.com/binocarlos/digger) network.
 
-This is an array of raw JSON objects that is the actual data the container represents.
+## containers
+You can create a container from some existing data:
 
-Each model has a '_digger' property assigned to it.
+```js
+var Container = require('digger-container');
 
-This object contains the meta data about the model (tagname, classnames etc).
+// create a container with a single model
+var post = Container({
+	name:'Hello World',
+	height:34
+})
 
-An example of a model:
+// create a container from an array of models
+var posts = Container([{
+	name:'Post A'
+},{
+	name:'Post B'
+}])
+
+```
+
+## container format
+Once some data has been containerized - it will have a **_digger** property injected into each model.
+
+This allows us to add meta-data like 'tagname', 'id' and 'class' to the containers models.
+
+```js
+var post = Container({
+	name:'Hello World'
+})
+
+post.addClass('frontpage');
+
+console.log(post.toJSON());
+
+/*
+
+	{
+		name:'Hello World',
+		_digger:{
+			class:['frontpage']
+		}
+	}
+	
+*/
+
+```
+
+Notice how the **class** property lives inside of the **_digger** property.
+
+This is so anything that digger requires for the model will not get in the way of your model data.
+
+An example of a more complete model:
 
 ```js
 {
@@ -44,18 +90,9 @@ An example of a model:
 ## children
 Each model in a container can also have a '_children' property.
 
-This is an array of model data that lives 'inside' of the parent container.
+This is an array of model data that lives inside of the parent container.
 
-This is how the digger tree structure works - by containers living inside of others.
-
-## JQuery style accessors
-A container is always an array of models - this lets you run [digger.io](https://github.com/binocarlos/digger.io) queries and have the container hold the results.
-
-If you 'get' an attribute - the container will return the value of the first model.
-
-If you 'set' an attribute - the container will apply the value to all models.
-
-This is consistent with how JQuery deals with it's underlying array of DOM elements:
+This is how the digger tree structure works - by containers living inside of other containers.
 
 # examples
 
@@ -145,6 +182,7 @@ these methods can be called on an instantiated container
 
 ### toJSON
 returns an array of the containers underlying models
+
 
 ### spawn
 returns a new container based upon the provided models
