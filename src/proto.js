@@ -209,10 +209,11 @@ Container.prototype.ensure_meta = function(done){
 Container.prototype.children = function(){
   var models = [];
   var self = this;
+  /*
   this.each(function(container){
     models = models.concat(container.get(0)._children || []);
-  })
-	return this.spawn(models);
+  })*/
+	return this.spawn(this.count()>0 ? this.get(0)._children : []);
 }
 
 Container.prototype.recurse = function(fn){

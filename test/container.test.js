@@ -291,16 +291,6 @@ describe('container', function(){
     values[1].should.equal('Scotland');
   })
 
-  it('should provide a summary', function() {
-
-    var test = Container('product', {
-      name:'test'
-    }).addClass('thing').id('45')
-
-    test.summary().should.equal('test: product#45.thing');
-    
-  })
-
 
   it('should ensure a digger property on all descendents', function() {
 
@@ -317,6 +307,19 @@ describe('container', function(){
     
   })
 /*
+
+  it('should provide a summary', function() {
+
+    var test = Container('product', {
+      name:'test'
+    }).addClass('thing').id('45')
+
+    test.summary().should.equal('test: product#45.thing');
+    
+  })
+
+
+
   it('should append and find children', function() {
     var parent = Container('product', {
       price:100,
