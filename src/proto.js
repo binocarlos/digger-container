@@ -15,7 +15,6 @@
 /*
   Module dependencies.
 */
-
 var EventEmitter = require('events').EventEmitter;
 var dotty = require('dotty');
 var util = require('util');
@@ -87,7 +86,7 @@ function factory(){
 
   }
 
-  instance.__proto__ = new Container;
+  instance.__proto__ = Container.prototype;
   instance.build(models);
   
   return instance;
@@ -236,7 +235,9 @@ Container.prototype.descendents = function(){
 Container.prototype.containers = function(){
   var self = this;
   return this.models.map(function(model){
-    return self.spawn([model]);
+    var ret = self.spawn([model]);
+    ret['$$hashKey'] = model._digger.diggerid;
+    return ret;
   })
 }
 
@@ -583,7 +584,8 @@ Container.prototype.summary = function(options){
     })
   }
 
-  parts.unshift(this.diggerid().substr(0,6));
+  // have each summary unique
+  parts.push('=' + this.diggerid().substr(0,6) + '...');
 
   return parts.join('');
 }
