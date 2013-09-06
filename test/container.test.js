@@ -312,14 +312,39 @@ describe('container', function(){
     var test = Container('test');
 
     test.symlink('/some/place');
-    test.digger('symlinks')['/some/place'].should.equal('symlink');
+    var link1 = test.digger('symlinks')['symlink:/some/place'];
+    link1.type.should.equal('symlink');
+    link1.warehouse.should.equal('/some/place');
+
     var otherthing = Container('other').diggerwarehouse('/oranges');
     test.symlink(otherthing);
-    test.digger('symlinks')[otherthing.diggerurl()].should.equal('symlink');
+
+    var link2 = test.digger('symlinks')['symlink:' + otherthing.diggerwarehouse() + '/' + otherthing.diggerid()];
+    link2.type.should.equal('symlink');
+    link2.warehouse.should.equal(otherthing.diggerwarehouse());
+    link2.diggerid.should.equal(otherthing.diggerid());
 
 
     test.symlink(otherthing, 'apples');
-    test.digger('symlinks')[otherthing.diggerurl() + '/apples'].should.equal('symlink');
+    var link3 = test.digger('symlinks')['symlink:' + otherthing.diggerwarehouse() + '/' + otherthing.diggerid() + '/apples'];
+
+    link3.type.should.equal('symlink');
+    link3.warehouse.should.equal(otherthing.diggerwarehouse());
+    link3.diggerid.should.equal(otherthing.diggerid());
+    link3.selector.should.equal('apples');
+
+    var attrparent = Container('parent');
+
+    var address = Container('address');
+    address.diggerwarehouse('/postoffice');
+
+    attrparent.attrlink('address', address);
+
+    var link1 = attrparent.digger('symlinks')['attr:' + address.diggerwarehouse() + '/' + address.diggerid()];
+    link1.type.should.equal('attr');
+    link1.field.should.equal('address');
+    link1.warehouse.should.equal('/postoffice');
+    link1.diggerid.should.equal(address.diggerid());
 
 
     

@@ -407,19 +407,57 @@ Container.prototype.symlink = function(target, selector){
   // target is a warehouse string
   // selector is an optional selector
   if(typeof(target)==='string'){
-    var url = target + (hasselector ? '/' + selector : '');
-    links[url] = 'symlink';
+    links['symlink:' + target + (selector ? '/' + selector : '')] = {
+      type:'symlink',
+      warehouse:target,
+      selector:selector
+    }
   }
   else{
     target.each(function(t){
-      var url = t.diggerurl() + (hasselector ? '/' + selector : '');
-      links[url] = 'symlink';
+      links['symlink:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '')] = {
+        type:'symlink',
+        warehouse:t.diggerwarehouse(),
+        diggerid:t.diggerid(),
+        selector:selector
+      }
     })  
   }
   
   this.digger('symlinks', links);
   return this;
 }
+
+Container.prototype.attrlink = function(field, target, selector){
+  var links = this.digger('symlinks') || {};
+  var hasselector = arguments.length>1;
+
+  // target is a warehouse string
+  // selector is an optional selector
+  if(typeof(target)==='string'){
+    links['attr:' + target + (selector ? '/' + selector : '')] = {
+      type:'attr',
+      field:field,
+      warehouse:target,
+      selector:selector
+    }
+  }
+  else{
+    target.each(function(t){
+      links['attr:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '')] = {
+        type:'attr',
+        field:field,
+        warehouse:t.diggerwarehouse(),
+        diggerid:t.diggerid(),
+        selector:selector
+      }
+    })  
+  }
+  
+  this.digger('symlinks', links);
+  return this;
+}
+
 
 Container.prototype.diggerid = property_wrapper('_digger', 'diggerid');
 Container.prototype.diggerparentid = property_wrapper('_digger', 'diggerparentid');
