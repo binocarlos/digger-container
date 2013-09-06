@@ -397,6 +397,30 @@ Container.prototype.attr = wrapper();
 Container.prototype.digger = wrapper('_digger');
 Container.prototype.data = wrapper('_digger.data');
 
+// a symlink means we always replace
+// we add a symlink header which replaces this container with
+// another in the contract resolve chain
+Container.prototype.symlink = function(target, selector){
+  var links = this.digger('symlinks') || {};
+  var hasselector = arguments.length>1;
+
+  // target is a warehouse string
+  // selector is an optional selector
+  if(typeof(target)==='string'){
+    var url = target + (hasselector ? '/' + selector : '');
+    links[url] = 'symlink';
+  }
+  else{
+    target.each(function(t){
+      var url = t.diggerurl() + (hasselector ? '/' + selector : '');
+      links[url] = 'symlink';
+    })  
+  }
+  
+  this.digger('symlinks', links);
+  return this;
+}
+
 Container.prototype.diggerid = property_wrapper('_digger', 'diggerid');
 Container.prototype.diggerparentid = property_wrapper('_digger', 'diggerparentid');
 Container.prototype.diggerwarehouse = property_wrapper('_digger', 'diggerwarehouse');
@@ -412,7 +436,7 @@ Container.prototype.diggerpath = function(){
 }
 
 
-var branchwrapper = property_wrapper('_digger', 'diggerbranch');
+var headerwrapper = property_wrapper('_digger', 'diggerbranch');
 Container.prototype.diggerbranch = function(){
   var ret = branchwrapper.apply(this, utils.toArray(arguments));
 

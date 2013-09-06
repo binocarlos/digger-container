@@ -306,6 +306,26 @@ describe('container', function(){
     
     
   })
+
+  it('should do symlinking', function() {
+
+    var test = Container('test');
+
+    test.symlink('/some/place');
+    test.digger('symlinks')['/some/place'].should.equal('symlink');
+    var otherthing = Container('other').diggerwarehouse('/oranges');
+    test.symlink(otherthing);
+    test.digger('symlinks')[otherthing.diggerurl()].should.equal('symlink');
+
+
+    test.symlink(otherthing, 'apples');
+    test.digger('symlinks')[otherthing.diggerurl() + '/apples'].should.equal('symlink');
+
+
+    
+  })
+
+
 /*
 
   it('should provide a summary', function() {
