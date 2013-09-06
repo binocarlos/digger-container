@@ -428,36 +428,42 @@ Container.prototype.symlink = function(target, selector){
   return this;
 }
 
-Container.prototype.attrlink = function(field, target, selector){
-  var links = this.digger('symlinks') || {};
-  var hasselector = arguments.length>1;
+function attrlink(listmode){
+  return function(field, target, selector){
+    var links = this.digger('symlinks') || {};
+    var hasselector = arguments.length>1;
 
-  // target is a warehouse string
-  // selector is an optional selector
-  if(typeof(target)==='string'){
-    links['attr:' + target + (selector ? '/' + selector : '')] = {
-      type:'attr',
-      field:field,
-      warehouse:target,
-      selector:selector
-    }
-  }
-  else{
-    target.each(function(t){
-      links['attr:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '')] = {
+    // target is a warehouse string
+    // selector is an optional selector
+    if(typeof(target)==='string'){
+      links['attr:' + target + (selector ? '/' + selector : '')] = {
         type:'attr',
         field:field,
-        warehouse:t.diggerwarehouse(),
-        diggerid:t.diggerid(),
+        listmode:listmode,
+        warehouse:target,
         selector:selector
       }
-    })  
+    }
+    else{
+      target.each(function(t){
+        links['attr:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '')] = {
+          type:'attr',
+          field:field,
+          listmode:listmode,
+          warehouse:t.diggerwarehouse(),
+          diggerid:t.diggerid(),
+          selector:selector
+        }
+      })  
+    }
+    
+    this.digger('symlinks', links);
+    return this;
   }
-  
-  this.digger('symlinks', links);
-  return this;
 }
 
+Container.prototype.attrlink = attrlink();
+Container.prototype.attrlistlink = attrlink(true);
 
 Container.prototype.diggerid = property_wrapper('_digger', 'diggerid');
 Container.prototype.diggerparentid = property_wrapper('_digger', 'diggerparentid');
