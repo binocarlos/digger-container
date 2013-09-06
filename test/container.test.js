@@ -340,7 +340,7 @@ describe('container', function(){
 
     attrparent.attrlink('address', address);
 
-    var link1 = attrparent.digger('symlinks')['attr:' + address.diggerwarehouse() + '/' + address.diggerid()];
+    var link1 = attrparent.digger('symlinks')['attr:' + address.diggerwarehouse() + '/' + address.diggerid() + ':address'];
     link1.type.should.equal('attr');
     link1.field.should.equal('address');
     link1.warehouse.should.equal('/postoffice');

@@ -436,7 +436,7 @@ function attrlink(listmode){
     // target is a warehouse string
     // selector is an optional selector
     if(typeof(target)==='string'){
-      links['attr:' + target + (selector ? '/' + selector : '')] = {
+      links['attr:' + target + (selector ? '/' + selector : '') + ':' + field] = {
         type:'attr',
         field:field,
         listmode:listmode,
@@ -446,7 +446,7 @@ function attrlink(listmode){
     }
     else{
       target.each(function(t){
-        links['attr:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '')] = {
+        links['attr:' + t.diggerwarehouse() + '/' + t.diggerid() + (selector ? '/' + selector : '') + ':' + field] = {
           type:'attr',
           field:field,
           listmode:listmode,
