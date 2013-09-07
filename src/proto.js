@@ -661,3 +661,12 @@ Container.prototype.summary = function(options){
 Container.prototype.toString = function(){
   return this.summary();
 }
+
+// assumes the models are actually a flat list of what
+// could become a tree
+// we use the utils.combine_tree_results to do this
+// and return the spawned result
+Container.prototype.combine_tree = function(){
+  this.models = utils.combine_tree_results(this.models);
+  return this;
+}
