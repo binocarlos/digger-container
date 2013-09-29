@@ -113,19 +113,37 @@ Container.prototype.build = function(models){
 
 	this.models = models || [];
 
-  function process_model(model){
+  /*
+  
+    we inject the warehouse url when it is not set by the server
+
+    this is for when we do :tree queries to ensure that the warehouse is in the raw data
+    
+  */
+  function process_model(model, warehouse){
     if(!model._digger){
       model._digger = {};
+    }
+    if(!model._data){
+      model._data = {};
     }
     if(!model._digger.diggerid){
       model._digger.diggerid = utils.diggerid();
     }
+    if(!model._digger.diggerwarehouse && warehouse){
+      model._digger.diggerwarehouse = warehouse;
+    }
     if(model._children){
-      model._children.forEach(process_model);
+      var parentwarehouse = model._digger.diggerwarehouse;
+      model._children.forEach(function(model){
+        process_model(model, parentwarehouse);
+      });
     }
   }
 
-  this.models.forEach(process_model);
+  this.models.forEach(function(model){
+    process_model(model);
+  });
 
   return this;
 }
@@ -395,7 +413,7 @@ function remove_wrapper(basepath){
 
 Container.prototype.attr = wrapper();
 Container.prototype.digger = wrapper('_digger');
-Container.prototype.data = wrapper('_digger.data');
+Container.prototype.data = wrapper('_data');
 
 // a symlink means we always replace
 // we add a symlink header which replaces this container with
