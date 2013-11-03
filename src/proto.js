@@ -645,6 +645,10 @@ Container.prototype.title = function(){
 
 Container.prototype.summary = function(options){
 
+  if(!this.diggerid()){
+    return '';
+  }
+
   options = options || {};
 
   var parts = [];
