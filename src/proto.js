@@ -15,10 +15,10 @@
 /*
   Module dependencies.
 */
+
+var utils = require('digger-utils');
 var EventEmitter = require('events').EventEmitter;
 var dotty = require('dotty');
-var util = require('util');
-var utils = require('digger-utils');
 
 function Container(){}
 
@@ -99,7 +99,7 @@ function factory(){
 */
 Container.factory = factory;
 
-util.inherits(Container, EventEmitter);
+utils.inherits(Container, EventEmitter);
 
 module.exports = Container;
 

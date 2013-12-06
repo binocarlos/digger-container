@@ -14,7 +14,7 @@ describe('container', function(){
   it('should be a function', function() {
     var container = Container();
 
-    container.should.be.a('function');
+    container.should.be.type('function');
   })
 
   it('should create an empty container with no models', function() {
@@ -82,7 +82,7 @@ describe('container', function(){
     })
 
     test.tag().should.equal('product');
-    test.diggerid().should.be.a('string');
+    test.diggerid().should.be.type('string');
     test.diggerid().length.should.equal(32);
   })
 
@@ -95,9 +95,9 @@ describe('container', function(){
       }
     })
 
-    test.models[0].should.be.a('object');
+    test.models[0].should.be.type('object');
     test.models[0].price.should.equal(100);
-    test.models[0]._digger.should.be.a('object');
+    test.models[0]._digger.should.be.type('object');
 
   })
 
@@ -147,12 +147,12 @@ describe('container', function(){
 
     test.attr('some.deep.attr', 23);
 
-    test.attr('some').should.be.a('object');
-    test.attr('some.deep').should.be.a('object');
+    test.attr('some').should.be.type('object');
+    test.attr('some.deep').should.be.type('object');
     test.attr('some.deep.attr').should.equal(23);
 
     var deep = test.attr('some.deep');
-    deep.attr.should.be.a('number');
+    deep.attr.should.be.type('number');
     deep.attr.should.equal(23);
   })  
 
@@ -168,14 +168,14 @@ describe('container', function(){
     var test = Container(simpledata);
 
     test.toJSON().length.should.equal(1);
-    test.toJSON()[0]._digger.should.be.a('object');
+    test.toJSON()[0]._digger.should.be.type('object');
   })
 
   it('should be able to access single containers via eq', function(){
     var test = Container(citydata);
 
     test.count().should.equal(1);
-    test.eq(0).should.be.a('function');
+    test.eq(0).should.be.type('function');
     test.eq(0).count().should.equal(1);
     test.eq(0).tag().should.equal('folder');
 
@@ -185,7 +185,7 @@ describe('container', function(){
     var test = Container(citydata);
 
     test.count().should.equal(1);
-    test.get(0).should.be.a('object');
+    test.get(0).should.be.type('object');
     test.get(0)._digger.id.should.equal('places');
 
   })
@@ -221,7 +221,7 @@ describe('container', function(){
       fruit:'apple'
     })
 
-    test.attr('obj').should.be.a('object');
+    test.attr('obj').should.be.type('object');
     test.attr('obj.fruit').should.equal('apple');
 
   })
@@ -232,7 +232,7 @@ describe('container', function(){
 
     test.attr('bool', false);
 
-    test.attr('bool').should.be.a('boolean');
+    test.attr('bool').should.be.type('boolean');
     test.attr('bool').should.equal(false);
 
   })
@@ -244,7 +244,7 @@ describe('container', function(){
     var uk = test.children();
     var name = uk.attr('name');
 
-    name.should.be.a('string');
+    name.should.be.type('string');
     name.should.equal('UK');
   })
 
