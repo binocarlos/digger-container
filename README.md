@@ -1,5 +1,7 @@
 # digger-container
 
+![Build status](https://api.travis-ci.org/binocarlos/digger-xml.png)
+
 A JQuery style wrapper for JSON model arrays.
 
 # install
@@ -9,10 +11,6 @@ A JQuery style wrapper for JSON model arrays.
 	$ npm install digger-container
 
 ## browser
-
-digger-container is a [component](https://github.com/component/component) and so you can:
-
-	$ component install binocarlos/digger-container
 
 You can also use [browserify](https://github.com/substack/node-browserify).
 
