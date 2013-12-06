@@ -1,6 +1,6 @@
 # digger-container
 
-![Build status](https://api.travis-ci.org/binocarlos/digger-xml.png)
+![Build status](https://api.travis-ci.org/binocarlos/digger-container.png)
 
 A JQuery style wrapper for JSON model arrays.
 
