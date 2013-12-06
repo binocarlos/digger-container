@@ -9,7 +9,7 @@ A JQuery style wrapper for JSON model arrays.
 ## node.js
 
 	$ npm install digger-container
-
+	
 ## browser
 
 You can also use [browserify](https://github.com/substack/node-browserify).

@@ -350,6 +350,26 @@ describe('container', function(){
     
   })
 
+  it('should allow custom data parsers', function() {
+
+    Container.parsers.push(function(data){
+      if(data.charAt(0)=='<'){
+        return [{
+          type:'xml'
+        }]
+      }
+      else{
+        return null;
+      }
+    })
+
+    var string = '<thing />';
+
+    var container = Container(string);
+
+    container.attr('type').should.equal('xml');
+    
+  })
 
 /*
 
