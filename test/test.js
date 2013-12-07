@@ -388,6 +388,7 @@ describe('container', function(){
     })
 
     container.tag().should.equal('folder');
+    container.attr('color').should.equal('red');
     
   })
 
