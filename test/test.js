@@ -371,6 +371,26 @@ describe('container', function(){
     
   })
 
+  it('shold inject data without overwriting existing values', function() {
+
+    var container = Container([{
+      _digger:{
+        diggerid:10,
+        tag:'folder'
+      }
+    }])
+
+    container.inject_data({
+      _digger:{
+        diggerid:10
+      },
+      color:'red'
+    })
+
+    container.tag().should.equal('folder');
+    
+  })
+
 /*
 
   it('should provide a summary', function() {

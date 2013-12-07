@@ -620,7 +620,7 @@ Container.prototype.isEmpty = function(){
 
 Container.prototype.inject_data = function(data){
 	this.models.forEach(function(model){
-		utils.extend(model, data);
+		utils.extend(true, model, data);
 	})
   return this;
 }
