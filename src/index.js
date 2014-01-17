@@ -17,6 +17,7 @@
 */
 
 var utils = require('digger-utils');
+var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var dotty = require('dotty');
 
@@ -119,7 +120,7 @@ function factory(){
 Container.factory = factory;
 Container.parsers = [];
 
-utils.inherits(Container, EventEmitter);
+util.inherits(Container, EventEmitter);
 
 /*
 
