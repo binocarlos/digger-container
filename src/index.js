@@ -151,6 +151,9 @@ Container.prototype.build = function(models){
     if(!model._digger.diggerwarehouse && warehouse){
       model._digger.diggerwarehouse = warehouse;
     }
+    if(!model._digger.created){
+      model._digger.created = new Date().getTime();
+    }
     if(model._children){
       var parentwarehouse = model._digger.diggerwarehouse;
       model._children.forEach(function(model){
