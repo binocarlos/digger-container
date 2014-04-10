@@ -29,6 +29,6 @@
   },
   "dependencies": {
     "dotty": "~0.0.2",
-    "digger-utils": "*"
+    "digger-utils": "~1.2.2"
   }
 }
