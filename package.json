@@ -1,6 +1,6 @@
 {
   "name": "digger-container",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A JQuery style array wrapper for JSON models",
   "main": "src/index.js",
   "scripts": {
