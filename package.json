@@ -27,6 +27,9 @@
   },
   "dependencies": {
     "dotty": "~0.0.2",
-    "digger-utils": "~2.0.0"
+    "digger-utils": "~2.0.0",
+    "digger-xml": "^0.2.3",
+    "supermodels": "^0.2.2",
+    "jdat": "^0.2.0"
   }
 }

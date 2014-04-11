@@ -159,9 +159,9 @@ describe('container', function(){
   it('should allow access to diggerurl', function(){
     var test = Container('test');
     test.diggerid('123');
-    test.diggerwarehouse('/testapi');
-
-    test.diggerurl().should.equal('/testapi/123');
+    test.path('/testapi');
+    test.inode(34355);
+    test.diggerurl().should.equal('/testapi/34355');
   })
 
   it('should export to JSON', function(){
@@ -307,69 +307,6 @@ describe('container', function(){
     
   })
 
-  it('should do symlinking', function() {
-
-    var test = Container('test');
-
-    test.symlink('/some/place');
-    var link1 = test.digger('symlinks')['symlink:/some/place'];
-    link1.type.should.equal('symlink');
-    link1.warehouse.should.equal('/some/place');
-
-    var otherthing = Container('other').diggerwarehouse('/oranges');
-    test.symlink(otherthing);
-
-    var link2 = test.digger('symlinks')['symlink:' + otherthing.diggerwarehouse() + '/' + otherthing.diggerid()];
-    link2.type.should.equal('symlink');
-    link2.warehouse.should.equal(otherthing.diggerwarehouse());
-    link2.diggerid.should.equal(otherthing.diggerid());
-
-
-    test.symlink(otherthing, 'apples');
-    var link3 = test.digger('symlinks')['symlink:' + otherthing.diggerwarehouse() + '/' + otherthing.diggerid() + '/apples'];
-
-    link3.type.should.equal('symlink');
-    link3.warehouse.should.equal(otherthing.diggerwarehouse());
-    link3.diggerid.should.equal(otherthing.diggerid());
-    link3.selector.should.equal('apples');
-
-    var attrparent = Container('parent');
-
-    var address = Container('address');
-    address.diggerwarehouse('/postoffice');
-
-    attrparent.attrlink('address', address);
-
-    var link1 = attrparent.digger('symlinks')['attr:' + address.diggerwarehouse() + '/' + address.diggerid() + ':address'];
-    link1.type.should.equal('attr');
-    link1.field.should.equal('address');
-    link1.warehouse.should.equal('/postoffice');
-    link1.diggerid.should.equal(address.diggerid());
-
-
-    
-  })
-
-  it('should allow custom data parsers', function() {
-
-    Container.parsers.push(function(data){
-      if(data.charAt(0)=='<'){
-        return [{
-          type:'xml'
-        }]
-      }
-      else{
-        return null;
-      }
-    })
-
-    var string = '<thing />';
-
-    var container = Container(string);
-
-    container.attr('type').should.equal('xml');
-    
-  })
 
   it('shold inject data without overwriting existing values', function() {
 

@@ -9,10 +9,6 @@ A JQuery style wrapper for JSON model arrays.
 ## node.js
 
 	$ npm install digger-container
-	
-## browser
-
-You can also use [browserify](https://github.com/substack/node-browserify).
 
 ## overview
 This library provides an api very similar to JQuery but for an array of JSON models rather than DOM elements.
@@ -254,10 +250,6 @@ run a function over a container for each model and all descendents
 ### descendents
 return a container containing a flat model array of every model and it's descendents
 
-### skeleton
-return an array of the _digger properties for each model
-
-
 ### property getter/setters
 the following methods allow you to get/set the data for the models:
 
@@ -265,8 +257,8 @@ the following methods allow you to get/set the data for the models:
  * digger - '_digger' properties
  * data - '_digger.data' properties - not saved to database
  * diggerid - property accessor for '_digger.diggerid'
- * diggerparentid - property accessor for '_digger.diggerparentid'
- * diggerwarehouse - property accessor for '_digger.diggerwarehouse'
+ * path - property accessor for '_digger.path'
+ * inode - property accessor for '_digger.inode'
  * id - property accessor for '_digger.id'
  * tag - property accessor for '_digger.tag'
  * classnames - property accessor for '_digger.classnames'
@@ -289,17 +281,11 @@ tells you if the first model has the given class
 ### hasAttr(name)
 tells you if the first model has the given attribute
 
-### isEmpty
+### isEmpty()
 if models.length<=0
 
 ### inject_data(data)
 extend the model with the given data
 
 ### diggerurl
-return this.diggerwarehouse() + '/' + this.diggerid()
-
-### title
-the name or title property returned
-
-### summary
-a pretty string summarizing the model
+return this.path() + '/' + this.inode()
