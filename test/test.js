@@ -378,6 +378,31 @@ describe('container', function(){
   })
 
 
+
+  it('should get the diggerurl for a supplychain', function() {
+
+    var container1 = Container('_supplychain');
+    container1.path('/a/b');
+    container1.inode(10);
+    container1.diggerurl().should.equal('/a/b');
+
+
+  })
+
+  
+
+
+
+  it('should tell if it is a supplychain', function() {
+
+    var container1 = Container('_supplychain');
+    container1.isSupplyChain().should.equal(true);
+
+
+  })
+
+
+
 /*
 
   it('should provide a summary', function() {

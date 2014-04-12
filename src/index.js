@@ -160,7 +160,7 @@ Container.prototype.path = supermodels(get_models, '_digger.path', true);
 Container.prototype.inode = supermodels(get_models, '_digger.inode', true);
 
 Container.prototype.diggerurl = function(){
-  return this.path() + '/' + this.inode(); 
+  return this.isSupplyChain() ? this.path() : this.path() + '/' + this.inode();
 }
 
 Container.prototype.removeAttr = supermodels(get_models, '', 'remove');
@@ -172,11 +172,12 @@ Container.prototype.addClass = supermodels(get_models, '_digger.class', 'array:a
 Container.prototype.removeClass = supermodels(get_models, '_digger.class', 'array:remove');
 Container.prototype.hasClass = supermodels(get_models, '_digger.class', 'array:has');
 Container.prototype.hasAttr = supermodels(get_models, '', 'has');
-
+Container.prototype.isSupplyChain = function(){
+  return this.tag()==='_supplychain';
+}
 Container.prototype.isEmpty = function(){
   return this.count()===0;
 }
-
 Container.prototype.inject_data = function(data){
 	this.models.forEach(function(model){
 		utils.extend(true, model, data);
