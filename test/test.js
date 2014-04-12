@@ -308,7 +308,7 @@ describe('container', function(){
   })
 
 
-  it('shold inject data without overwriting existing values', function() {
+  it('should inject data without overwriting existing values', function() {
 
     var container = Container([{
       _digger:{
@@ -331,7 +331,7 @@ describe('container', function(){
 
 
 
-  it('shold add a container to an existing container', function() {
+  it('should add a container to an existing container', function() {
 
     var container1 = Container([{
       name:'num1'
@@ -349,7 +349,7 @@ describe('container', function(){
 
   })
 
-  it('shold add an array of containers to an existing container', function() {
+  it('should add an array of containers to an existing container', function() {
 
     var container1 = Container([{
       name:'num1'
@@ -367,6 +367,17 @@ describe('container', function(){
 
   })
 
+
+
+  it('should get the diggerurl', function() {
+
+    var container1 = Container('test');
+    container1.path('/a/b');
+    container1.inode(10);
+    container1.diggerurl().should.equal('/a/b/10');
+
+
+  })
 
 
 /*
