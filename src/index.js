@@ -187,3 +187,15 @@ Container.prototype.inject_data = function(data){
 Container.prototype.toXML = function(){
   return XML.stringify(this.toJSON());
 }
+
+Container.prototype.add = function(toadd){
+  var self = this;
+  if(utils.isArray(toadd)){
+    toadd.forEach(function(add){
+      self.models = self.models.concat(toadd.models);
+    })
+  }
+  else{
+    this.models = this.models.concat(toadd.models);
+  }
+}

@@ -329,6 +329,46 @@ describe('container', function(){
     
   })
 
+
+
+  it('shold add a container to an existing container', function() {
+
+    var container1 = Container([{
+      name:'num1'
+    }])
+
+    var container2 = Container([{
+      name:'num2'
+    }, {
+      name:'num3'
+    }])
+
+    container1.add(container2);
+    container1.count().should.equal(3);
+
+
+  })
+
+  it('shold add an array of containers to an existing container', function() {
+
+    var container1 = Container([{
+      name:'num1'
+    }])
+
+    var container2 = Container([{
+      name:'num2'
+    }, {
+      name:'num3'
+    }])
+
+    container1.add(container2.containers());
+    container1.count().should.equal(3);
+
+
+  })
+
+
+
 /*
 
   it('should provide a summary', function() {
