@@ -192,7 +192,7 @@ Container.prototype.add = function(toadd){
   var self = this;
   if(utils.isArray(toadd)){
     toadd.forEach(function(add){
-      self.models = self.models.concat(toadd.models);
+      self.models = self.models.concat(add.models);
     })
   }
   else{

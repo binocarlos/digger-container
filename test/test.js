@@ -351,19 +351,17 @@ describe('container', function(){
 
   it('should add an array of containers to an existing container', function() {
 
-    var container1 = Container([{
-      name:'num1'
-    }])
+    var placeA = Container('_supplychain');
+    placeA.path('/placeA');
+    placeA.inode('10');
+    var placeB = Container('_supplychain');
+    placeB.path('/placeA');
+    placeB.inode('11');
+    var holder = Container();
+    holder.add([placeA, placeB]);
 
-    var container2 = Container([{
-      name:'num2'
-    }, {
-      name:'num3'
-    }])
-
-    container1.add(container2.containers());
-    container1.count().should.equal(3);
-
+    holder.models[0]._digger.inode.should.equal('10');
+    holder.models[1]._digger.inode.should.equal('11');
 
   })
 
