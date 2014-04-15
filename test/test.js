@@ -401,6 +401,15 @@ describe('container', function(){
 
   })
 
+  it('should return the container after addClass', function() {
+
+    var container1 = Container('apples');
+
+    container1.addClass('red').hasClass('red').should.equal(true);
+    
+
+
+  })
 
 
 /*
