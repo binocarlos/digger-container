@@ -412,6 +412,18 @@ describe('container', function(){
   })
 
 
+  it('should replace the leading slash when setting the inode', function() {
+
+    var container1 = Container('apples');
+
+    container1.inode('/red')
+
+    container1.inode().should.equal('red')
+
+
+  })
+
+
 /*
 
   it('should provide a summary', function() {

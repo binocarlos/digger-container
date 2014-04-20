@@ -157,7 +157,15 @@ Container.prototype.tag = supermodels(get_models, '_digger.tag', true);
 Container.prototype.classnames = supermodels(get_models, '_digger.class', true);
 Container.prototype.diggerid = supermodels(get_models, '_digger.diggerid', true);
 Container.prototype.path = supermodels(get_models, '_digger.path', true);
-Container.prototype.inode = supermodels(get_models, '_digger.inode', true);
+
+var inode = supermodels(get_models, '_digger.inode', true)
+Container.prototype.inode = function(val){
+  var args = [];
+  if(arguments.length>0){
+    args = [('' + val).replace(/^\//, '')]
+  }
+  return inode.apply(this, args)
+}
 
 Container.prototype.diggerurl = function(){
   return this.isSupplyChain() ? this.path() : this.path() + '/' + this.inode();
