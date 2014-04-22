@@ -208,3 +208,7 @@ Container.prototype.add = function(toadd){
     this.models = this.models.concat(toadd.models);
   }
 }
+
+Container.prototype.tree = function(){
+  return this.spawn(utils.combine_tree_results(this.models))
+}
