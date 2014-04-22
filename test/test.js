@@ -424,6 +424,39 @@ describe('container', function(){
   })
 
 
+  it('return a tree of flat models that are related', function() {
+
+    var arr = [{
+      a:10,
+      _digger:{
+        diggerid:3,
+        path:'/a',
+        inode:'b'
+      }
+    },{
+      a:12,
+      _digger:{
+        diggerid:10,
+        path:'/a/b/c',
+        inode:'d'
+      }
+    },{
+      a:11,
+      _digger:{
+        diggerid:2,
+        path:'/a/b',
+        inode:'c'
+      }
+    }]
+
+    var container = Container(arr).tree()
+
+    container.count().should.equal(1)
+    container.children().children().eq(0).attr('a').should.equal(12)
+
+
+  })
+
 /*
 
   it('should provide a summary', function() {
